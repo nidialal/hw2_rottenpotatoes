@@ -7,7 +7,20 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+        if !params[:sort_by].nil?
+      session[:sort_by] = params[:sort_by]
+    end
+    
+   ##pull in movies in sorted order
+    @movies = Movie.order(session[:sort_by]).where("title != ''")
+  
+    
+    ##set up the variables for the classes in the haml
+    if session["sort_by"] == "title"
+      @title_class = 'hilite'
+    elsif session["sort_by"] == 'release_date'
+      @release_date_class = 'hilite'
+    end
   end
 
   def new
