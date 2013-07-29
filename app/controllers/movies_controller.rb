@@ -8,10 +8,17 @@ class MoviesController < ApplicationController
 
   def index
 
-    if (!params[:sort_by] || !params[:ratings])
+    if (session[:ratings] && !params[:ratings])
       if session[:redirected] == 0 || session[:redirected].nil?
-        redirect_to movies_path(!params[:ratings]? session[:ratings] : params[:ratings] , (!params[:sort_by])? session[:sort_by] : params[:sort_by] )
+        redirect_to movies_path(session[:ratings],params[:sort_by] )
         session[:redirected] = 1
+      end
+    end
+
+    if (session[:sort_by] && !params[:sort_by])
+      if session[:redirected1] == 0 || session[:redirected1].nil?
+        redirect_to movies_path session[:sort_by]
+        session[:redirected1] = 1
       end
     end
 
